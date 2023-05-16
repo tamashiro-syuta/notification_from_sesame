@@ -10,6 +10,7 @@ app.use(express.urlencoded({
   extended: true
 }))
 
+// ヘルスチェック
 app.get('/', (req, res) => {
   res.json({
     message: "Application running..."
@@ -39,7 +40,7 @@ app.get('/remindme', async (req, res) => {
 // Webhook
 app.post('/webhook', async (req, res) => {
   // Signature検証
-  if (!line.validateSignature(req.body, req.headers['x-line-signature'])) { 
+  if (!line.validateSignature(req.body, req.headers['x-line-signature'])) {
     return res.status(401).json({
       message: "Invalid signature received"
     })

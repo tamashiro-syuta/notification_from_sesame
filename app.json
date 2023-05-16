@@ -1,9 +1,15 @@
 {
   "name": "sesame-linebot-reminder",
   "description": "A LINE bot app to notify if the Sesame device remains unlocked / Node.js app using Express",
-  "repository": "https://github.com/kota-imai/sesame-linebot-reminder",
+  "repository": "https://github.com/tamashiro-syuta/notification_from_sesame",
   "logo": "https://cdn.rawgit.com/heroku/node-js-getting-started/main/public/node.svg",
-  "keywords": ["node", "express", "heroku", "line", "sesame"],
+  "keywords": [
+    "node",
+    "express",
+    "heroku",
+    "line",
+    "sesame"
+  ],
   "addons": [
     "scheduler:standard"
   ],
