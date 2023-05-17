@@ -1,17 +1,15 @@
 import 'dotenv/config'
 import express, { Request, Response } from 'express';
+import Line from './lib/line';
+import Sesame from './lib/sesame';
 
 export const app = express();
 const PORT = process.env.PORT || 5000;
 const router = express.Router();
 
-const sesame = require('./sesame');
-const line = require('./line')
+const sesame = new Sesame();
+const line = new Line();
 
-app.use(express.json())
-app.use(express.urlencoded({
-  extended: true
-}))
 
 // ヘルスチェック
 router.get('/', (_: Request, res: Response) => {
