@@ -1,22 +1,24 @@
+import { Client, ClientConfig, FlexContainer, FlexMessage, Message, validateSignature } from "@line/bot-sdk";
+
 const line = require('@line/bot-sdk');
 
 const config = {
   channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
   channelSecret: process.env.CHANNEL_SECRET,
 };
-const client = new line.Client(config);
+const client: Client = new line.Client(config);
 const userId = process.env.LINE_USER_ID;
 
 const NOTIFY_MESSAGE = 'カギが開いていますぅぅ!!!!'
 
 // Webhookの署名検証
-exports.validateSignature = (body, signature) => {
+exports.validateSignature = (body: string | Buffer, signature: string | string[] | undefined) => {
   return line.validateSignature(Buffer.from(JSON.stringify(body)), config.channelSecret, signature);
 }
 
 // プッシュ通知を送る
 exports.notify = async () => {
-  const message = {
+  const message: FlexMessage = {
     type: "flex",
     altText: NOTIFY_MESSAGE,
     contents: flexContents
@@ -28,7 +30,7 @@ exports.notify = async () => {
 }
 
 // フレックスメッセージ
-const flexContents = {
+const flexContents: FlexContainer = {
   type: "bubble",
   body: {
     type: "box",

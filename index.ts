@@ -1,4 +1,6 @@
-const express = require('express');
+import express, { Request, Response } from 'express';
+
+// const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -11,20 +13,20 @@ app.use(express.urlencoded({
 }))
 
 // ヘルスチェック
-app.get('/', (_, res) => {
+app.get('/', (_: Request, res: Response) => {
   res.json({
     message: "Application running..."
   });
 });
 
 // 家のSESAMEの開閉状態を取得する
-app.get('/status', async (_, res) => {
+app.get('/status', async (_: Request, res: Response) => {
   const { data } = await sesame.get_status();
   res.json(data);
 });
 
 // カギが開いてればLINE通知する
-app.get('/remindme', async (_, res) => {
+app.get('/remindme', async (_: Request, res: Response) => {
   const { data } = await sesame.get_status();
   if (data.CHSesame2Status == 'unlocked') {
     await line.notify();
@@ -38,7 +40,7 @@ app.get('/remindme', async (_, res) => {
 });
 
 // Webhook
-app.post('/webhook', async (req, res) => {
+app.post('/webhook', async (req: Request, res: Response) => {
   // Signature検証
   if (!line.validateSignature(req.body, req.headers['x-line-signature'])) {
     return res.status(401).json({
