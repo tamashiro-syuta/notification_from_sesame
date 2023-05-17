@@ -51,9 +51,6 @@ class Sesame {
     const dateDate = Buffer.allocUnsafe(4);
     dateDate.writeUInt32LE(date);
     const message = Buffer.from(dateDate.slice(1, 4));
-    const a = this.aesCmac(key, message);
-    console.log("typeof a")
-    console.log(typeof a)
     return this.aesCmac(key, message);
   }
 
