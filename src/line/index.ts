@@ -1,19 +1,23 @@
 import { Client, ClientConfig, FlexContainer, FlexMessage, Message, validateSignature } from "@line/bot-sdk";
 
-const line = require('@line/bot-sdk');
-
-const config = {
-  channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
-  channelSecret: process.env.CHANNEL_SECRET,
+const config: ClientConfig = {
+  channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN || '',
+  channelSecret: process.env.CHANNEL_SECRET || '',
 };
-const client: Client = new line.Client(config);
+
+const client: Client = new Client(config);
 const userId = process.env.LINE_USER_ID;
 
 const NOTIFY_MESSAGE = 'カギが開いていますぅぅ!!!!'
 
 // Webhookの署名検証
 exports.validateSignature = (body: string | Buffer, signature: string | string[] | undefined) => {
-  return line.validateSignature(Buffer.from(JSON.stringify(body)), config.channelSecret, signature);
+  const stringSignature = setSignature(signature)
+  return validateSignature(
+    Buffer.from(JSON.stringify(body)),
+    config.channelSecret || '',
+    stringSignature
+  );
 }
 
 // プッシュ通知を送る
@@ -23,10 +27,16 @@ exports.notify = async () => {
     altText: NOTIFY_MESSAGE,
     contents: flexContents
   };
-  await client.pushMessage(userId, message)
+  await client.pushMessage(userId || '', message)
     .catch((err) => {
       console.log(err);
     });
+}
+
+const setSignature = (signature: string | string[] | undefined) => {
+  if (typeof signature === 'undefined') return ''
+  if (typeof signature === 'string') return signature
+  return signature[1]
 }
 
 // フレックスメッセージ
