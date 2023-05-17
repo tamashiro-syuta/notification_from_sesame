@@ -11,23 +11,23 @@ app.use(express.urlencoded({
 }))
 
 // ヘルスチェック
-app.get('/', (req, res) => {
+app.get('/', (_, res) => {
   res.json({
     message: "Application running..."
   });
 });
 
 // 家のSESAMEの開閉状態を取得する
-app.get('/status', async (req, res) => {
+app.get('/status', async (_, res) => {
   const { data } = await sesame.get_status();
   res.json(data);
 });
 
 // カギが開いてればLINE通知する
-app.get('/remindme', async (req, res) => {
+app.get('/remindme', async (_, res) => {
   const { data } = await sesame.get_status();
   if (data.CHSesame2Status == 'unlocked') {
-    const result = await line.notify();
+    await line.notify();
     return res.json({
       message: "Notification sended!"
     })
@@ -47,7 +47,7 @@ app.post('/webhook', async (req, res) => {
   }
   // postbackイベントを処理する
   if (req.body.events.length > 0 && req.body.events[0].type == "postback") {
-    const result = await sesame.lock_cmd();
+    await sesame.lock_cmd();
   }
   res.sendStatus(200);
 })
