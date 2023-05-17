@@ -10,7 +10,6 @@ const router = express.Router();
 const sesame = new Sesame();
 const line = new Line();
 
-
 // ヘルスチェック
 router.get('/', (_: Request, res: Response) => {
   res.json({
