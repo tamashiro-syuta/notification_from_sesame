@@ -1,5 +1,3 @@
-//require("dotenv").config();
-
 const line = require('@line/bot-sdk');
 
 const config = {
@@ -9,16 +7,18 @@ const config = {
 const client = new line.Client(config);
 const userId = process.env.LINE_USER_ID;
 
+const NOTIFY_MESSAGE = 'カギが開いていますぅぅ!!!!'
+
 // Webhookの署名検証
 exports.validateSignature = (body, signature) => {
   return line.validateSignature(Buffer.from(JSON.stringify(body)), config.channelSecret, signature);
 }
 
 // プッシュ通知を送る
-exports.notify = async () => { 
+exports.notify = async () => {
   const message = {
     type: "flex",
-    altText: "カギが開いています",
+    altText: NOTIFY_MESSAGE,
     contents: flexContents
   };
   await client.pushMessage(userId, message)
@@ -36,7 +36,7 @@ const flexContents = {
     contents: [
       {
         type: "text",
-        text: "カギあけっぱなし！",
+        text: NOTIFY_MESSAGE,
         weight: "bold",
         size: "md"
       }
@@ -53,7 +53,7 @@ const flexContents = {
         height: "sm",
         action: {
           type: "postback",
-          label: "LOCK",
+          label: "頼む！閉めてくれ！",
           data: "lock"
         }
       },
