@@ -1,30 +1,30 @@
-const express = require('express');
-const app = express();
+import 'dotenv/config'
+import express, { Request, Response } from 'express';
+import Line from './lib/line';
+import Sesame from './lib/sesame';
+
+export const app = express();
 const PORT = process.env.PORT || 5000;
+const router = express.Router();
 
-const sesame = require('./sesame.js');
-const line = require('./line.js')
-
-app.use(express.json())
-app.use(express.urlencoded({
-  extended: true
-}))
+const sesame = new Sesame();
+const line = new Line();
 
 // ヘルスチェック
-app.get('/', (_, res) => {
+router.get('/', (_: Request, res: Response) => {
   res.json({
     message: "Application running..."
   });
-});
+})
 
 // 家のSESAMEの開閉状態を取得する
-app.get('/status', async (_, res) => {
+router.get('/status', async (_: Request, res: Response) => {
   const { data } = await sesame.get_status();
   res.json(data);
-});
+})
 
 // カギが開いてればLINE通知する
-app.get('/remindme', async (_, res) => {
+router.get('/remind_me', async (_: Request, res: Response) => {
   const { data } = await sesame.get_status();
   if (data.CHSesame2Status == 'unlocked') {
     await line.notify();
@@ -35,10 +35,10 @@ app.get('/remindme', async (_, res) => {
   res.json({
     message: "The key is locked"
   })
-});
+})
 
 // Webhook
-app.post('/webhook', async (req, res) => {
+router.get('/webhook', async (req: Request, res: Response) => {
   // Signature検証
   if (!line.validateSignature(req.body, req.headers['x-line-signature'])) {
     return res.status(401).json({
@@ -52,6 +52,5 @@ app.post('/webhook', async (req, res) => {
   res.sendStatus(200);
 })
 
-app.listen(PORT, () => {
-  console.log(`Listening on ${PORT}!`);
-});
+app.use('/', router);
+app.listen(PORT, () => { console.log(`Listening on ${PORT}!`) });
