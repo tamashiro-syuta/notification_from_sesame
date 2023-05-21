@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Node.js app using Sesame API",
   "engines": {
-    "node": "20.0.x",
+    "node": "20.0.0",
     "npm": "9.6.4"
   },
   "main": "dist/index.js",
