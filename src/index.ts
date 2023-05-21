@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import express, { Request, Response } from 'express';
-import Sesame from 'src/lib/sesame';
-import Line from 'src/lib/line';
+import Line from './lib/line';
+import Sesame from './lib/sesame';
 
 export const app = express();
 const PORT = process.env.PORT || 5000;
