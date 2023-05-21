@@ -1,5 +1,5 @@
 {
-  "name": "linebot-unlock-reminder",
+  "name": "linebot-lock-reminder",
   "version": "1.0.0",
   "description": "Node.js app using Sesame API",
   "engines": {
