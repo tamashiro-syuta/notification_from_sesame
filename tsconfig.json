@@ -9,8 +9,11 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "strict": true,
-    "moduleResolution": "node",
     "baseUrl": "src",
+    "moduleResolution": "node",
+    "paths": {
+      "*": ["src/*"]
+    },
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
