@@ -40,6 +40,9 @@ router.get('/remind_me', async (_: Request, res: Response) => {
 // Webhook
 router.get('/webhook', async (req: Request, res: Response) => {
   // Signature検証
+  console.log(req.body)
+  console.log(req.headers['x-line-signature'])
+
   if (!line.validateSignature(req.body, req.headers['x-line-signature'])) {
     return res.status(401).json({
       message: "Invalid signature received"
