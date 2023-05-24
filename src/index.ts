@@ -11,21 +11,30 @@ const sesame = new Sesame();
 const line = new Line();
 
 // ヘルスチェック
-router.get('/', (_: Request, res: Response) => {
+router.get('/', (req: Request, res: Response) => {
+  console.log(req.body)
+  console.log(req.headers['x-line-signature'])
+
   res.json({
     message: "Application running..."
   });
 })
 
 // 家のSESAMEの開閉状態を取得する
-router.get('/status', async (_: Request, res: Response) => {
+router.get('/status', async (req: Request, res: Response) => {
+  console.log(req.body)
+  console.log(req.headers['x-line-signature'])
+
   const { data } = await sesame.get_status();
   res.json(data);
 })
 
 // カギが開いてればLINE通知する
-router.get('/remind_me', async (_: Request, res: Response) => {
+router.get('/remind_me', async (req: Request, res: Response) => {
   const { data } = await sesame.get_status();
+  console.log(req.body)
+  console.log(req.headers['x-line-signature'])
+
   if (data.CHSesame2Status == 'unlocked') {
     await line.notify();
     return res.json({
