@@ -49,10 +49,8 @@ router.get('/remind_me', async (req: Request, res: Response) => {
 // Webhook
 router.post('/webhook', async (req: Request, res: Response) => {
   // Signature検証
-  console.log('req.body');
-  console.log(req.body);
-  console.log('req.headers');
-  console.log(req.headers);
+  console.log('req');
+  console.log(req);
 
   if (!line.validateSignature(req.body, req.headers['x-line-signature'])) {
     return res.status(401).json({
