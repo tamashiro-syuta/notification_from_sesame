@@ -47,7 +47,7 @@ router.get('/remind_me', async (req: Request, res: Response) => {
 })
 
 // Webhook
-router.get('/webhook', async (req: Request, res: Response) => {
+router.post('/webhook', async (req: Request, res: Response) => {
   // Signature検証
   console.log(req)
   console.log(req.body)
