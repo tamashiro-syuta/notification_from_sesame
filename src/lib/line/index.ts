@@ -2,7 +2,6 @@ import { Client, ClientConfig, FlexContainer, FlexMessage, validateSignature } f
 
 class Line {
   config: ClientConfig
-  userId: string
   client: Client
   NOTIFY_MESSAGE: string = 'カギが開いていますぅぅ!!!!'
 
@@ -11,7 +10,6 @@ class Line {
       channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN || '',
       channelSecret: process.env.CHANNEL_SECRET,
     }
-    this.userId = process.env.LINE_USER_ID || '';
     this.client = new Client(this.config)
   }
 
@@ -30,7 +28,7 @@ class Line {
       altText: this.NOTIFY_MESSAGE,
       contents: this.flexContents
     };
-    await this.client.pushMessage(this.userId || '', message)
+    await this.client.broadcast(message)
       .catch((err) => {
         console.log(err);
       });
