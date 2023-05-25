@@ -33,6 +33,10 @@ class Line {
       contents: this.flexContents
     };
     const notifyMembers = [this.userId, this.partnerId].filter(item => item)
+
+    console.log('notifyMembers')
+    console.log(notifyMembers)
+
     notifyMembers.forEach(async (id) => {
       await this.client.pushMessage(id, message)
         .catch((err) => {
