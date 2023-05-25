@@ -4,6 +4,7 @@ import Line from './lib/line';
 import Sesame from './lib/sesame';
 
 export const app = express();
+app.use(express.json());
 const PORT = process.env.PORT || 5000;
 const router = express.Router();
 
@@ -52,7 +53,7 @@ router.post('/webhook', async (req: Request, res: Response) => {
   console.log('req');
   console.log(req);
 
-  if (!line.validateSignature(req.body, req.headers['x-line-signature'])) {
+  if (!line.validateSignature(JSON.stringify(req.body), req.headers['x-line-signature'])) {
     return res.status(401).json({
       message: "Invalid signature received"
     })
