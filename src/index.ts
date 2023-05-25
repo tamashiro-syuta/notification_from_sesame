@@ -24,18 +24,19 @@ router.get('/status', async (req: Request, res: Response) => {
   res.json(data);
 })
 
-// カギが開いてればLINE通知する
-router.get('/remind_me', async (req: Request, res: Response) => {
+// 鍵が開いていれば、閉じる処理を行い、LINE通知する
+router.get('/check_key', async (_: Request, res: Response) => {
   const { data } = await sesame.get_status();
 
   if (data.CHSesame2Status == 'unlocked') {
-    await line.notify();
+    await sesame.lock_cmd();
+    await line.notify('カギあけっぱだったから、閉めといたで〜');
     return res.json({
-      message: "Notification sended!"
+      message: "The key is locked"
     })
   };
   res.json({
-    message: "The key is locked"
+    message: "The key is already locked"
   })
 })
 
