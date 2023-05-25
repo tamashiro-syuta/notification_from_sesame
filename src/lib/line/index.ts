@@ -1,19 +1,18 @@
-import { Client, ClientConfig, FlexContainer, FlexMessage, validateSignature } from "@line/bot-sdk";
+import { Client, ClientConfig, FlexContainer, FlexMessage, Message, validateSignature } from "@line/bot-sdk";
 
 class Line {
   config: ClientConfig
-  userId: string
-  partnerId: string
+  notifyMembers: string[]
   client: Client
-  NOTIFY_MESSAGE = 'カギが開いていますぅぅ!!!!'
 
   constructor() {
     this.config = {
       channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN || '',
       channelSecret: process.env.CHANNEL_SECRET,
     }
-    this.userId = process.env.LINE_USER_ID || '';
-    this.partnerId = process.env.LINE_PARTNER_ID || '';
+    const adminUserId = process.env.LINE_USER_ID || '';
+    const partnerId = process.env.LINE_PARTNER_ID || '';
+    this.notifyMembers = [adminUserId, partnerId].filter(item => item)
     this.client = new Client(this.config)
   }
 
@@ -26,69 +25,22 @@ class Line {
     );
   }
 
-  notify = async () => {
-    const message: FlexMessage = {
-      type: "flex",
-      altText: this.NOTIFY_MESSAGE,
-      contents: this.flexContents
+  notify = async (messageText: string) => {
+    const message: Message = {
+      type: 'text',
+      text: messageText
     };
-    const notifyMembers = [this.userId, this.partnerId].filter(item => item)
 
-    console.log('notifyMembers')
-    console.log(notifyMembers)
-
-    notifyMembers.forEach(async (id) => {
-      await this.client.pushMessage(id, message)
-        .catch((err) => {
-          console.log(err);
-        });
-    })
+    await this.client.multicast(this.notifyMembers, message)
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   private setSignature = (signature: string | string[] | undefined) => {
     if (typeof signature === 'undefined') return ''
     if (typeof signature === 'string') return signature
     return signature[1]
-  }
-
-  private flexContents: FlexContainer = {
-    type: "bubble",
-    body: {
-      type: "box",
-      layout: "vertical",
-      contents: [
-        {
-          type: "text",
-          text: this.NOTIFY_MESSAGE,
-          weight: "bold",
-          size: "md"
-        }
-      ]
-    },
-    footer: {
-      type: "box",
-      layout: "vertical",
-      spacing: "sm",
-      contents: [
-        {
-          type: "button",
-          style: "primary",
-          height: "sm",
-          action: {
-            type: "postback",
-            label: "頼む！閉めてくれ！",
-            data: "lock"
-          }
-        },
-        {
-          type: "box",
-          layout: "vertical",
-          contents: [],
-          margin: "sm"
-        }
-      ],
-      flex: 0
-    }
   }
 }
 
