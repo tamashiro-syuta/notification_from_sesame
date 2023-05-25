@@ -25,7 +25,7 @@ router.get('/status', async (req: Request, res: Response) => {
 })
 
 // 鍵が開いていれば、閉じる処理を行い、LINE通知する
-router.get('/check_key', async (_: Request, res: Response) => {
+router.get('/lock', async (_: Request, res: Response) => {
   const { data } = await sesame.get_status();
 
   if (data.CHSesame2Status == 'unlocked') {
