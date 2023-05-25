@@ -33,8 +33,18 @@ router.get('/status', async (req: Request, res: Response) => {
 // カギが開いてればLINE通知する
 router.get('/remind_me', async (req: Request, res: Response) => {
   const { data } = await sesame.get_status();
+  console.log('req.ip');
+  console.log(req.ip);
+  console.log('req.path');
+  console.log(req.path);
+  console.log('req.protocol');
+  console.log(req.protocol);
+  console.log('req.method');
+  console.log(req.method);
+  console.log('req.query.name')
+  console.log(req.query.name)
+  console.log('req.body')
   console.log(req.body)
-  console.log(req.headers['x-line-signature'])
 
   if (data.CHSesame2Status == 'unlocked') {
     await line.notify();
