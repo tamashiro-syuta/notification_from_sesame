@@ -13,9 +13,6 @@ const line = new Line();
 
 // ヘルスチェック
 router.get('/', (req: Request, res: Response) => {
-  console.log(req.body)
-  console.log(req.headers['x-line-signature'])
-
   res.json({
     message: "Application running..."
   });
@@ -23,9 +20,6 @@ router.get('/', (req: Request, res: Response) => {
 
 // 家のSESAMEの開閉状態を取得する
 router.get('/status', async (req: Request, res: Response) => {
-  console.log(req.body)
-  console.log(req.headers['x-line-signature'])
-
   const { data } = await sesame.get_status();
   res.json(data);
 })
@@ -33,18 +27,6 @@ router.get('/status', async (req: Request, res: Response) => {
 // カギが開いてればLINE通知する
 router.get('/remind_me', async (req: Request, res: Response) => {
   const { data } = await sesame.get_status();
-  console.log('req.ip');
-  console.log(req.ip);
-  console.log('req.path');
-  console.log(req.path);
-  console.log('req.protocol');
-  console.log(req.protocol);
-  console.log('req.method');
-  console.log(req.method);
-  console.log('req.query.name')
-  console.log(req.query.name)
-  console.log('req.body')
-  console.log(req.body)
 
   if (data.CHSesame2Status == 'unlocked') {
     await line.notify();
@@ -60,9 +42,6 @@ router.get('/remind_me', async (req: Request, res: Response) => {
 // Webhook
 router.post('/webhook', async (req: Request, res: Response) => {
   // Signature検証
-  console.log('req');
-  console.log(req);
-
   if (!line.validateSignature(req.body, req.headers['x-line-signature'])) {
     return res.status(401).json({
       message: "Invalid signature received"
