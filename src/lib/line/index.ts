@@ -2,14 +2,18 @@ import { Client, ClientConfig, FlexContainer, FlexMessage, validateSignature } f
 
 class Line {
   config: ClientConfig
+  userId: string
+  partnerId: string
   client: Client
-  NOTIFY_MESSAGE: string = 'カギが開いていますぅぅ!!!!'
+  NOTIFY_MESSAGE = 'カギが開いていますぅぅ!!!!'
 
   constructor() {
     this.config = {
       channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN || '',
       channelSecret: process.env.CHANNEL_SECRET,
     }
+    this.userId = process.env.LINE_USER_ID || '';
+    this.partnerId = process.env.LINE_PARTNER_ID || '';
     this.client = new Client(this.config)
   }
 
@@ -28,10 +32,13 @@ class Line {
       altText: this.NOTIFY_MESSAGE,
       contents: this.flexContents
     };
-    await this.client.broadcast(message)
-      .catch((err) => {
-        console.log(err);
-      });
+    const notifyMembers = [this.userId, this.partnerId].filter(item => item)
+    notifyMembers.forEach(async (id) => {
+      await this.client.pushMessage(id, message)
+        .catch((err) => {
+          console.log(err);
+        });
+    })
   }
 
   private setSignature = (signature: string | string[] | undefined) => {
