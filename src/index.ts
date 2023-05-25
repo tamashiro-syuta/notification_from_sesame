@@ -29,7 +29,7 @@ router.get('/check_key', async (_: Request, res: Response) => {
   const { data } = await sesame.get_status();
 
   if (data.CHSesame2Status == 'unlocked') {
-    await sesame.lock_cmd();
+    // await sesame.lock_cmd();
     // await line.notify('カギあけっぱだったから、閉めといたで〜');
     return res.json({
       message: "The key is locked"
