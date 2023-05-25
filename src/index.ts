@@ -12,14 +12,14 @@ const sesame = new Sesame();
 const line = new Line();
 
 // ヘルスチェック
-router.get('/', (req: Request, res: Response) => {
+router.get('/', (_: Request, res: Response) => {
   res.json({
     message: "Application running..."
   });
 })
 
 // 家のSESAMEの開閉状態を取得する
-router.get('/status', async (req: Request, res: Response) => {
+router.get('/status', async (_: Request, res: Response) => {
   const { data } = await sesame.get_status();
   res.json(data);
 })
