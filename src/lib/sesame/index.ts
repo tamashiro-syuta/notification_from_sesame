@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 
-type LockType = 'locked' | 'unlocked' | 'moved'
+export type LockType = 'locked' | 'unlocked' | 'moved'
 
 type Status = {
   "batteryPercentage": number,  // 電池残量94%

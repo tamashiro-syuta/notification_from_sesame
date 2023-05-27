@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import express, { Request, Response } from 'express';
 import Line from './lib/line';
-import Sesame from './lib/sesame';
+import Sesame, { LockType } from './lib/sesame';
 
 export const app = express();
 app.use(express.json());
@@ -72,3 +72,25 @@ router.post('/webhook', async (req: Request, res: Response) => {
 
 app.use('/', router);
 app.listen(PORT, () => { console.log(`Listening on ${PORT}!`) });
+
+type Props = {
+  lockType: LockType,
+  notifyMessage: string,
+  failedMessage: string
+}
+
+const notify_after_operate_sesame = async (props: Props) => {
+  const { lockType, notifyMessage, failedMessage } = props;
+  const { data } = await sesame.get_status();
+
+  if (data.CHSesame2Status !== lockType) {
+    const operate_cmd = lockType == 'locked' ? sesame.lock_cmd : sesame.unlock_cmd;
+    try {
+      await operate_cmd();
+      await line.notify(notifyMessage);
+    } catch (error) {
+      await line.notify(failedMessage);
+      throw error;
+    }
+  }
+}
