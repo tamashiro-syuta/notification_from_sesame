@@ -63,11 +63,31 @@ router.post('/webhook', async (req: Request, res: Response) => {
       message: "Invalid signature received"
     })
   }
-  // postbackイベントを処理する
-  if (req.body.events.length > 0 && req.body.events[0].type == "postback") {
-    await sesame.lock_cmd();
+
+  try {
+    const UNLOCK_TEXT = "開け、ゴマ!!!!"
+    const LOCK_TEXT = "閉まれ、ゴマ!!!!"
+    const unlock_condition = req.body.events.length > 0 && req.body.events[0].message.text == UNLOCK_TEXT
+    const lock_condition = req.body.events.length > 0 && req.body.events[0].message.text == LOCK_TEXT
+
+    if (unlock_condition) {
+      await notify_after_operate_sesame({
+        lockType: 'unlocked',
+        notifyMessage: 'カギ開けたで〜',
+        failedMessage: 'すまん！カギ開けるのできんかった！',
+      })
+    }
+    if (lock_condition) {
+      await notify_after_operate_sesame({
+        lockType: 'locked',
+        notifyMessage: 'カギ閉めといたで〜',
+        failedMessage: 'すまん！カギ閉めるのできんかった！',
+      })
+    }
+    return res.sendStatus(200);
+  } catch (error) {
+    return res.sendStatus(500);
   }
-  res.sendStatus(200);
 })
 
 app.use('/', router);
