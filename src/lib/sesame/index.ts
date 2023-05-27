@@ -28,6 +28,10 @@ class Sesame {
     return await this.operate_sesame('locked')
   }
 
+  unlock_cmd = async (): Promise<AxiosResponse<any, any>> => {
+    return await this.operate_sesame('unlocked')
+  }
+
   private operate_sesame = async (lockType: LockType) => {
     const { SESAME_UUID, SESAME_API_KEY, KEY_SECRET_HEX } = process.env
     const url = `https://app.candyhouse.co/api/sesame2/${SESAME_UUID}/cmd`;
@@ -54,9 +58,11 @@ class Sesame {
     return this.aesCmac(key, message);
   }
 
-  // toggle: 88, lock: 82
+  // toggle: 88, lock: 82, unlock: 83
   private setCmdAndHistory = (cmd: LockType) => {
-    if (cmd === 'locked') return { cmd: 82, history: 'お家見守り隊' }
+    const LOCK_USER = 'お家見守り隊'
+    if (cmd === "unlocked") return { cmd: 83, history: LOCK_USER }
+    if (cmd === 'locked') return { cmd: 82, history: LOCK_USER }
     return { cmd: 88, history: 'toggled by web api' } // == toggle the key
   }
 }

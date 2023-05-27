@@ -24,6 +24,21 @@ router.get('/status', async (_: Request, res: Response) => {
   res.json(data);
 })
 
+router.get('/unlock', async (_: Request, res: Response) => {
+  const { data } = await sesame.get_status();
+
+  try {
+    if (data.CHSesame2Status == 'unlocked') {
+      await sesame.unlock_cmd();
+      await line.notify('カギ開けたで〜');
+      return res.json({ message: "The key is locked" })
+    };
+  } catch (error) {
+    await line.notify('すまん！カギ開けるのできんかった！');
+  }
+  res.json({ message: "The key is already locked" })
+})
+
 // 鍵が開いていれば、閉じる処理を行い、LINE通知する
 router.get('/lock', async (_: Request, res: Response) => {
   const { data } = await sesame.get_status();
