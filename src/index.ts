@@ -28,7 +28,7 @@ router.get('/unlock', async (_: Request, res: Response) => {
   const { data } = await sesame.get_status();
 
   try {
-    if (data.CHSesame2Status == 'unlocked') {
+    if (data.CHSesame2Status == 'locked') {
       await sesame.unlock_cmd();
       await line.notify('カギ開けたで〜');
       return res.json({ message: "The key is locked" })
