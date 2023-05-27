@@ -25,34 +25,30 @@ router.get('/status', async (_: Request, res: Response) => {
 })
 
 router.get('/unlock', async (_: Request, res: Response) => {
-  const { data } = await sesame.get_status();
-
   try {
-    if (data.CHSesame2Status == 'locked') {
-      await sesame.unlock_cmd();
-      await line.notify('カギ開けたで〜');
-      return res.json({ message: "The key is unlocked" })
-    };
+    await notify_after_operate_sesame({
+      lockType: 'unlocked',
+      notifyMessage: 'カギ開けたで〜',
+      failedMessage: 'すまん！カギ開けるのできんかった！',
+    })
+    return res.sendStatus(200);
   } catch (error) {
-    await line.notify('すまん！カギ開けるのできんかった！');
+    return res.sendStatus(500);
   }
-  res.json({ message: "The key is already locked" })
 })
 
 // 鍵が開いていれば、閉じる処理を行い、LINE通知する
 router.get('/lock', async (_: Request, res: Response) => {
-  const { data } = await sesame.get_status();
-
   try {
-    if (data.CHSesame2Status == 'unlocked') {
-      await sesame.lock_cmd();
-      await line.notify('カギあけっぱだったから、閉めといたで〜');
-      return res.json({ message: "The key is locked" })
-    };
+    await notify_after_operate_sesame({
+      lockType: 'locked',
+      notifyMessage: 'カギあけっぱだったから、閉めといたで〜',
+      failedMessage: 'すまん！カギ閉めるのできんかった！',
+    })
+    return res.sendStatus(200);
   } catch (error) {
-    await line.notify('すまん！カギ閉めるのできんかった！');
+    return res.sendStatus(500);
   }
-  res.json({ message: "The key is already locked" })
 })
 
 // Webhook
