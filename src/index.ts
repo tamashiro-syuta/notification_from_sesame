@@ -13,9 +13,7 @@ const line = new Line();
 
 // ヘルスチェック
 router.get('/', (_: Request, res: Response) => {
-  res.json({
-    message: "Application running..."
-  });
+  return res.sendStatus(200);
 })
 
 // 家のSESAMEの開閉状態を取得する
