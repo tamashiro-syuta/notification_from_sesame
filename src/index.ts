@@ -22,7 +22,7 @@ router.get('/status', async (_: Request, res: Response) => {
   res.json(data);
 })
 
-router.get('/unlock', async (_: Request, res: Response) => {
+router.get('/hoge', async (_: Request, res: Response) => {
   try {
     await notify_after_operate_sesame({
       lockType: 'unlocked',
