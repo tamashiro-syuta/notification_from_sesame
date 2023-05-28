@@ -15,6 +15,46 @@ class Line {
     const partnerId = process.env.LINE_PARTNER_ID || '';
     this.notifyMembers = [adminUserId, partnerId].filter(item => item)
     this.client = new Client(this.config)
+
+    this.client.createRichMenu({
+      size: {
+        width: 2500,
+        height: 1686
+      },
+      selected: true,
+      name: 'operate sesame',
+      chatBarText: 'メニュー',
+      areas: [
+        {
+          bounds: {
+            x: 0,
+            y: 0,
+            width: 2500,
+            height: 843
+          },
+          action: {
+            type: 'message',
+            text: '開け、ゴマ!!!!'
+          }
+        },
+        {
+          bounds: {
+            x: 0,
+            y: 843,
+            width: 2500,
+            height: 843
+          },
+          action: {
+            type: 'message',
+            text: '閉まれ、ゴマ!!!!'
+          }
+        }
+      ]
+    }).then((richMenuId) => {
+      this.client.setRichMenuImage(richMenuId, fs.createReadStream("../../../assets/richmenu.jpg"));
+    }).catch((err) => {
+      console.log(err);
+    });
   }
 
   validateSignature = (body: string | Buffer, signature: string | string[] | undefined) => {
