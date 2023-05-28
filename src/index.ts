@@ -16,27 +16,7 @@ router.get('/', (_: Request, res: Response) => {
   return res.sendStatus(200);
 })
 
-// 家のSESAMEの開閉状態を取得する
-router.get('/status', async (_: Request, res: Response) => {
-  const { data } = await sesame.get_status();
-  res.json(data);
-})
-
-// どうせ一時的に許容しているルーティングなので、このままいく
-router.get('/hoge', async (_: Request, res: Response) => {
-  try {
-    await notify_after_operate_sesame({
-      lockType: 'unlocked',
-      notifyMessage: 'カギ開けたで〜',
-      failedMessage: 'すまん！カギ開けるのできんかった！',
-    })
-    return res.sendStatus(200);
-  } catch (error) {
-    return res.sendStatus(500);
-  }
-})
-
-// 鍵が開いていれば、閉じる処理を行い、LINE通知する
+// バッチ処理用のエンドポイント
 router.get('/lock', async (_: Request, res: Response) => {
   try {
     await notify_after_operate_sesame({
