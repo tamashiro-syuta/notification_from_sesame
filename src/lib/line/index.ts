@@ -17,6 +17,7 @@ class Line {
     this.client = new Client(this.config)
 
     this.client.createRichMenu({
+      // 画像サイズ
       size: {
         width: 2500,
         height: 1686
@@ -30,7 +31,7 @@ class Line {
             x: 0,
             y: 0,
             width: 2500,
-            height: 100
+            height: 843
           },
           action: {
             type: 'message',
@@ -40,9 +41,9 @@ class Line {
         {
           bounds: {
             x: 0,
-            y: 100,
+            y: 843,
             width: 2500,
-            height: 1586
+            height: 1686
           },
           action: {
             type: 'message',
