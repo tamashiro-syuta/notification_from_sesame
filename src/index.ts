@@ -22,6 +22,7 @@ router.get('/status', async (_: Request, res: Response) => {
   res.json(data);
 })
 
+// どうせ一時的に許容しているルーティングなので、このままいく
 router.get('/hoge', async (_: Request, res: Response) => {
   try {
     await notify_after_operate_sesame({
