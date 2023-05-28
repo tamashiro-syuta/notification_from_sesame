@@ -51,8 +51,8 @@ class Line {
           }
         }
       ]
-    }).then((richMenuId) => {
-      this.client.setRichMenuImage(richMenuId, fs.createReadStream("./assets/richmenu.jpg"));
+    }).then(async (richMenuId) => {
+      await this.client.setRichMenuImage(richMenuId, fs.createReadStream("./assets/richmenu.jpg"));
       this.client.setDefaultRichMenu(richMenuId);
     }).catch((err) => {
       console.log(err);
