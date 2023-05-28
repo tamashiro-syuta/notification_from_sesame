@@ -30,7 +30,7 @@ class Line {
             x: 0,
             y: 0,
             width: 2500,
-            height: 843
+            height: 1686
           },
           action: {
             type: 'message',
