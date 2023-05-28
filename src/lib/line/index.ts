@@ -1,4 +1,4 @@
-import { Client, ClientConfig, FlexContainer, FlexMessage, Message, validateSignature } from "@line/bot-sdk";
+import { Client, ClientConfig, Message, validateSignature } from "@line/bot-sdk";
 import fs from "fs";
 
 class Line {
