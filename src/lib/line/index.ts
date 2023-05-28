@@ -19,7 +19,7 @@ class Line {
     this.client.createRichMenu({
       size: {
         width: 1250,
-        height: 843
+        height: 1686
       },
       selected: true,
       name: 'operate sesame',
@@ -30,7 +30,7 @@ class Line {
             x: 0,
             y: 0,
             width: 1250,
-            height: 843
+            height: 100
           },
           action: {
             type: 'message',
@@ -40,9 +40,9 @@ class Line {
         {
           bounds: {
             x: 0,
-            y: 843,
-            width: 1250,
-            height: 843
+            y: 100,
+            width: 2500,
+            height: 1586
           },
           action: {
             type: 'message',
