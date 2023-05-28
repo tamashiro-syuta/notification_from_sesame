@@ -18,7 +18,7 @@ class Line {
 
     this.client.createRichMenu({
       size: {
-        width: 1250,
+        width: 2500,
         height: 1686
       },
       selected: true,
@@ -29,7 +29,7 @@ class Line {
           bounds: {
             x: 0,
             y: 0,
-            width: 1250,
+            width: 2500,
             height: 100
           },
           action: {
