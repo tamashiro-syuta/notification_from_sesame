@@ -40,7 +40,7 @@ class Line {
         {
           bounds: {
             x: 0,
-            y: 843,
+            y: 0,
             width: 2500,
             height: 843
           },
