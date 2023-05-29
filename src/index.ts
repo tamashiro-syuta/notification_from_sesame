@@ -19,7 +19,7 @@ router.get('/', (_: Request, res: Response) => {
 // バッチ処理用のエンドポイント
 router.get('/lock', async (_: Request, res: Response) => {
   try {
-    await notify_after_operate_sesame({
+    await notifyAfterOperateSesame({
       lockType: 'locked',
       notifyMessage: 'カギあけっぱだったから、閉めといたで〜',
       failedMessage: 'すまん！カギ閉めるのできんかった！',
@@ -42,18 +42,18 @@ router.post('/webhook', async (req: Request, res: Response) => {
   try {
     const UNLOCK_TEXT = "開け、ゴマ!!!!"
     const LOCK_TEXT = "閉まれ、ゴマ!!!!"
-    const unlock_condition = req.body.events.length > 0 && req.body.events[0].message.text == UNLOCK_TEXT
-    const lock_condition = req.body.events.length > 0 && req.body.events[0].message.text == LOCK_TEXT
+    const unlockCondition = req.body.events.length > 0 && req.body.events[0].message.text == UNLOCK_TEXT
+    const lockCondition = req.body.events.length > 0 && req.body.events[0].message.text == LOCK_TEXT
 
-    if (unlock_condition) {
-      await notify_after_operate_sesame({
+    if (unlockCondition) {
+      await notifyAfterOperateSesame({
         lockType: 'unlocked',
         notifyMessage: 'カギ開けたで〜',
         failedMessage: 'すまん！カギ開けるのできんかった！',
       })
     }
-    if (lock_condition) {
-      await notify_after_operate_sesame({
+    if (lockCondition) {
+      await notifyAfterOperateSesame({
         lockType: 'locked',
         notifyMessage: 'カギ閉めといたで〜',
         failedMessage: 'すまん！カギ閉めるのできんかった！',
@@ -74,14 +74,14 @@ type Props = {
   failedMessage: string
 }
 
-const notify_after_operate_sesame = async (props: Props) => {
+const notifyAfterOperateSesame = async (props: Props) => {
   const { lockType, notifyMessage, failedMessage } = props;
-  const { data } = await sesame.get_status();
+  const { data } = await sesame.getStatus();
 
   if (data.CHSesame2Status !== lockType) {
-    const operate_cmd = lockType == 'locked' ? sesame.lock_cmd : sesame.unlock_cmd;
+    const operateCmd = lockType == 'locked' ? sesame.lockCmd : sesame.unlockCmd;
     try {
-      await operate_cmd();
+      await operateCmd();
       await line.notify(notifyMessage);
     } catch (error) {
       await line.notify(failedMessage);

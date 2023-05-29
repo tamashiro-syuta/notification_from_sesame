@@ -17,32 +17,32 @@ class Sesame {
     this.aesCmac = require('node-aes-cmac').aesCmac;
   }
 
-  get_status = async (): Promise<AxiosResponse<Status, any>> => {
+  getStatus = async (): Promise<AxiosResponse<Status, any>> => {
     const { SESAME_UUID, SESAME_API_KEY } = process.env
     const url = `https://app.candyhouse.co/api/sesame2/${SESAME_UUID}`;
 
     return await axios.get(url, { headers: { 'x-api-key': SESAME_API_KEY! } });
   }
 
-  lock_cmd = async (): Promise<AxiosResponse<any, any>> => {
-    return await this.operate_sesame('locked')
+  lockCmd = async (): Promise<AxiosResponse<any, any>> => {
+    return await this.operateSesame('locked')
   }
 
-  unlock_cmd = async (): Promise<AxiosResponse<any, any>> => {
-    return await this.operate_sesame('unlocked')
+  unlockCmd = async (): Promise<AxiosResponse<any, any>> => {
+    return await this.operateSesame('unlocked')
   }
 
-  private operate_sesame = async (lockType: LockType) => {
+  private operateSesame = async (lockType: LockType) => {
     const { SESAME_UUID, SESAME_API_KEY, KEY_SECRET_HEX } = process.env
     const url = `https://app.candyhouse.co/api/sesame2/${SESAME_UUID}/cmd`;
     const { cmd, history } = this.setCmdAndHistory(lockType);
-    const base64_history = Buffer.from(history).toString('base64');
+    const base64History = Buffer.from(history).toString('base64');
     const sign: Buffer = this.generateRandomTag(KEY_SECRET_HEX || '');
 
     const headers = { 'x-api-key': SESAME_API_KEY! }
     const body = {
       cmd: cmd,
-      history: base64_history,
+      history: base64History,
       sign: sign
     }
 
