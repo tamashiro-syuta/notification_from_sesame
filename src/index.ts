@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import express, { Request, Response } from 'express';
-import Line from './models/line';
-import Sesame, { LockType } from './models/sesame';
+import Line from './services/line';
+import Sesame, { LockType } from './services/sesame';
 
 export const app = express();
 app.use(express.json());
