@@ -55,7 +55,7 @@ class Line {
       await this.client.setRichMenuImage(richMenuId, fs.createReadStream("./assets/richmenu.jpg"));
       this.client.setDefaultRichMenu(richMenuId);
     }).catch((err) => {
-      console.log(err);
+      throw err;
     });
   }
 
@@ -76,7 +76,7 @@ class Line {
 
     await this.client.multicast(this.notifyMembers, message)
       .catch((err) => {
-        console.log(err);
+        throw err;
       });
   }
 
