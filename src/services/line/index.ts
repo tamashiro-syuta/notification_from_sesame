@@ -80,6 +80,13 @@ class Line {
       });
   }
 
+  isAuthenticated = (userId: string): boolean => {
+    this.notifyMembers.forEach((memberId) => {
+      if (memberId === userId) { return true }
+    })
+    return false
+  }
+
   private setSignature = (signature: string | string[] | undefined) => {
     if (typeof signature === 'undefined') return ''
     if (typeof signature === 'string') return signature
