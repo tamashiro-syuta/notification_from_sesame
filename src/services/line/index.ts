@@ -82,6 +82,8 @@ class Line {
 
   isAuthenticated = (userId: string): boolean => {
     this.notifyMembers.forEach((memberId) => {
+      console.log('memberId')
+      console.log(memberId)
       if (memberId === userId) { return true }
     })
     return false
