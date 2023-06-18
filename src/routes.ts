@@ -8,7 +8,6 @@ export const router = express.Router();
 
 router.get('/', healthCheck);
 
-router.use('/lock', isAuthenticated);
 router.get('/lock', lock);
 
 router.use('/webhook', isAuthenticated);
